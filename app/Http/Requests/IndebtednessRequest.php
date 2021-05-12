@@ -29,7 +29,7 @@ class IndebtednessRequest extends FormRequest
         return [
             'name' => 'required|string|max:191',
             'amount' => 'required|integer',
-            'phone' => 'required|unique:users,phone|digits:10',
+            'phone' => 'required|digits:10',
             'status' => 'required|string|in:دائن,مدين',
             'statement' => 'nullable|string|max:191',
         ];

@@ -28,14 +28,14 @@ class ImportFromRequest extends FormRequest
     {
         return [
             'totalPrice' => 'integer',
-            'jalabeya' => 'integer',
-            'jalabeyaPrice' => 'integer',
-            'alaalla' => 'integer',
-            'alaallaPrice' => 'integer',
-            'pants' => 'integer',
-            'pantsPrice' => 'integer',
-            'tageeya' => 'integer',
-            'tageeyaPrice' => 'integer',
+            'jalabeya' => 'required_with:jalabeyaPrice|integer',
+            'jalabeyaPrice' => 'required_with:jalabeya|integer',
+            'alaalla' => 'required_with:alaallaPrice|integer',
+            'alaallaPrice' => 'required_with:alaalla|integer',
+            'pants' => 'required_with:pantsPrice|integer',
+            'pantsPrice' => 'required_with:pants|integer',
+            'tageeya' => 'required_with:tageeyaPrice|integer',
+            'tageeyaPrice' => 'required_with:tageeya|integer',
         ];
     }
 

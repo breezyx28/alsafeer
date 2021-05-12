@@ -28,10 +28,10 @@ class ReceiptRequest extends FormRequest
     public function rules()
     {
         return [
-            'receiptNumber' => '',
-            'clientName' => '',
-            'clientPhone' => '',
-            'receiptStatus' => '',
+            'receiptNumber' => 'required|integer',
+            'clientName' => 'required|string|max:191',
+            'clientPhone' => 'required|unique:users,phone|digits:10',
+            'receiptStatus' => 'required|string|in:تم التسليم,لم يستلم',
         ];
     }
 

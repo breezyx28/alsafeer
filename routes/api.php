@@ -36,14 +36,14 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::get('search', [SearchController::class, 'SearchController']);
 
         // resources
-        Route::apiResource('readySales', ReadySaleControllerResource::class);
-        Route::apiResource('buys', BuyControllerResource::class);
-        Route::apiResource('expenses', ExpensesControllerResource::class);
-        Route::apiResource('importFroms', ImportFromControllerResource::class);
-        Route::apiResource('Indebtednesses', IndebtednessControllerResource::class);
-        Route::apiResource('newMeasures', NewMeasureControllerResource::class);
-        Route::apiResource('receipts', ReceiptControllerResource::class);
-        Route::apiResource('invoices', InvoiceControllerResource::class);
+        Route::apiResource('readySales', ReadySaleControllerResource::class)->only('store');
+        Route::apiResource('buys', BuyControllerResource::class)->only('store');
+        Route::apiResource('expenses', ExpensesControllerResource::class)->only('store');
+        Route::apiResource('importFroms', ImportFromControllerResource::class)->only('store');
+        Route::apiResource('Indebtednesses', IndebtednessControllerResource::class)->only('store');
+        Route::apiResource('newMeasures', NewMeasureControllerResource::class)->only('store');
+        Route::apiResource('receipts', ReceiptControllerResource::class)->only('store');
+        Route::apiResource('invoices', InvoiceControllerResource::class)->only('show', 'index');
     });
 
     // admin

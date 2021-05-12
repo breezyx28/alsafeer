@@ -27,11 +27,11 @@ class IndebtednessRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => '',
-            'amount' => '',
-            'phone' => '',
-            'status' => '',
-            'statement' => '',
+            'name' => 'required|string|max:191',
+            'amount' => 'required|integer',
+            'phone' => 'required|unique:users,phone|digits:10',
+            'status' => 'required|string|in:دائن,مدين',
+            'statement' => 'nullable|string|max:191',
         ];
     }
 

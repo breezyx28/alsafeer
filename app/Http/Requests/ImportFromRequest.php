@@ -27,15 +27,15 @@ class ImportFromRequest extends FormRequest
     public function rules()
     {
         return [
-            'totalPrice' => '',
-            'jalabeya' => '',
-            'jalabeyaPrice' => '',
-            'alaalla' => '',
-            'alaallaPrice' => '',
-            'pants' => '',
-            'pantsPrice' => '',
-            'tageeya' => '',
-            'tageeyaPrice' => '',
+            'totalPrice' => 'integer',
+            'jalabeya' => 'integer',
+            'jalabeyaPrice' => 'integer',
+            'alaalla' => 'integer',
+            'alaallaPrice' => 'integer',
+            'pants' => 'integer',
+            'pantsPrice' => 'integer',
+            'tageeya' => 'integer',
+            'tageeyaPrice' => 'integer',
         ];
     }
 

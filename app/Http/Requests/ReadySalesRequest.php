@@ -28,12 +28,26 @@ class ReadySalesRequest extends FormRequest
     public function rules()
     {
         return [
-            'clientName' => '',
-            'customType' => '',
-            'amount' => '',
-            'price' => '',
-            'paymentMethod' => '',
-            'shiftUser' => '',
+            'clientName' => 'required|string|max',
+            'customType' => ['required', ['required', Rule::in([
+                'جلابية',
+                'على الله',
+                'سروال',
+                'سديري',
+                'فنيلة',
+                'عصاية',
+                'طاقية',
+                'بوكسر',
+                'ساعة',
+                'عطور',
+                'قماش',
+                'جزمة',
+                'حذاء',
+            ])],],
+            'amount' => 'required|integer',
+            'price' => 'required|integer',
+            'paymentMethod' => 'required|string|in:كاش,بنكك',
+            'shiftUser' => 'required|string|exists:users,username',
         ];
     }
 

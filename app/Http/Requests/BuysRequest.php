@@ -27,10 +27,10 @@ class BuysRequest extends FormRequest
     public function rules()
     {
         return [
-            'productName' => '',
-            'amount' => '',
-            'price' => '',
-            'measure' => '',
+            'productName' => 'required|string|max:191',
+            'amount' => 'required|integer',
+            'price' => 'required|integer',
+            'measure' => 'required|string|in:قطعة,ياردة,متر',
         ];
     }
 

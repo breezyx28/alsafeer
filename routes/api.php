@@ -1,8 +1,17 @@
 <?php
 
+use App\Http\Controllers\BuyControllerResource;
+use App\Http\Controllers\ExpensesControllerResource;
+use App\Http\Controllers\ImportFromControllerResource;
+use App\Http\Controllers\IndebtednessControllerResource;
+use App\Http\Controllers\InvoiceControllerResource;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NewMeasureControllerResource;
+use App\Http\Controllers\ReadySaleControllerResource;
+use App\Http\Controllers\ReceiptControllerResource;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\UserControllerResource;
 // use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +34,32 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
         // search
         Route::get('search', [SearchController::class, 'SearchController']);
+
+        // resources
+        Route::apiResource('readySales', ReadySaleControllerResource::class);
+        Route::apiResource('buys', BuyControllerResource::class);
+        Route::apiResource('expenses', ExpensesControllerResource::class);
+        Route::apiResource('importFroms', ImportFromControllerResource::class);
+        Route::apiResource('Indebtednesses', IndebtednessControllerResource::class);
+        Route::apiResource('newMeasures', NewMeasureControllerResource::class);
+        Route::apiResource('receipts', ReceiptControllerResource::class);
+        Route::apiResource('invoices', InvoiceControllerResource::class);
     });
 
     // admin
     Route::group(['prefix' => ADMIN, 'middleware' => 'adminWare'], function () {
+
+        // resources
+        Route::apiResources([
+            'Users' => UserControllerResource::class,
+            'readySales' => ReadySaleControllerResource::class,
+            'buys' => BuyControllerResource::class,
+            'expenses' => ExpensesControllerResource::class,
+            'importFroms' => ImportFromControllerResource::class,
+            'Indebtednesses' => IndebtednessControllerResource::class,
+            'newMeasures' => NewMeasureControllerResource::class,
+            'receipts' => ReceiptControllerResource::class,
+            'invoices' => InvoiceControllerResource::class,
+        ]);
     });
 });

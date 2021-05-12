@@ -20,7 +20,7 @@ class LoginController extends Controller
     {
 
         $credintials = [
-            'phone' => $request->phone,
+            'username' => $request->username,
             'password' => $request->password,
         ];
 
@@ -30,8 +30,7 @@ class LoginController extends Controller
             return Resp::Error('خطأ في كلمة السر او رقم الهاتف');
         }
 
-        $auth = auth()->user();
-        $user = \App\Models\User::where('id', $auth->id)->with('favourit')->get();
+        $user = auth()->user();
 
         return response()->json([
             'success' => true,

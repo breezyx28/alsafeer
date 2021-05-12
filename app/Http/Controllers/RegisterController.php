@@ -22,20 +22,10 @@ class RegisterController extends Controller
                 $user->password = null;
             }
 
-            if ($validate->$key == 'birthDate') {
-
-                $user->birthDate = date('Y-m-d', strtotime($validate->birthDate));
-            }
-
             $user->$key = $value;
         }
 
-        if (isset($validate->thumbnail)) {
-            // $user->thumbnail = null;
-            $user->thumbnail = $request->file('thumbnail')->storePublicly('Profile');
-        }
         $user->password = Hash::make($request->password);
-        $user->role_id = 3;
 
         try {
             $user->save();

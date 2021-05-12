@@ -28,7 +28,7 @@ class UsersRequest extends FormRequest
     public function rules()
     {
         return [
-            'empNumber' => 'required|numeric|max:100',
+            'empNumber' => 'required|numeric',
             'empName' => 'required|string|max:191',
             'phone' => 'required|unique:users,phone|digits:10',
             'address' => 'nullable|string|max:191',

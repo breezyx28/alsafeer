@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewMeasure;
+use App\Helper\ResponseMessage as Resp;
+use App\Http\Requests\NewMeasuresRequest;
 use Illuminate\Http\Request;
 
 class NewMeasureControllerResource extends Controller
@@ -14,7 +16,9 @@ class NewMeasureControllerResource extends Controller
      */
     public function index()
     {
-        //
+        $states = \App\Models\NewMeasure::all();
+
+        return Resp::Success('تم', $states);
     }
 
     /**
@@ -23,9 +27,22 @@ class NewMeasureControllerResource extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewMeasuresRequest $request)
     {
-        //
+        $validate = $request->validated();
+
+        $measures = new NewMeasure();
+
+        foreach ($validate as $key => $value) {
+            $measures->$key = $value;
+        }
+
+        try {
+            $measures->save();
+            return Resp::Success('تم المقاسات بنجاج', $measures);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**
@@ -36,7 +53,7 @@ class NewMeasureControllerResource extends Controller
      */
     public function show(NewMeasure $newMeasure)
     {
-        //
+        return Resp::Success('تم', $newMeasure);
     }
 
     /**

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class NewMeasure extends Model
 {
     use HasFactory;
+
+    protected $table = 'new_measures';
 }

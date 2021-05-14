@@ -18,7 +18,7 @@ class AuthUser
     public function isAuthorized()
     {
 
-        if ($this->user->activity != 0) {
+        if (auth()->user()) {
             return true;
         }
         return false;
@@ -27,7 +27,7 @@ class AuthUser
     public function Role()
     {
         $u = new User();
-        $user = $u->find($this->user->id);
+        $user = $u->find(auth()->user()->id);
         $role = $user->role;
 
         return $role;
@@ -36,7 +36,7 @@ class AuthUser
     public function isAdmin()
     {
 
-        if ($this->user->activity != 0 && $this->user->role_id == 1) {
+        if (auth()->user()->role == 'مدير') {
             return true;
         }
         return false;

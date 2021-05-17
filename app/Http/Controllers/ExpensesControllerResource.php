@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expenses;
+use App\Helper\ResponseMessage as Resp;
+use App\Http\Requests\ExpensesRequest;
 use Illuminate\Http\Request;
 
 class ExpensesControllerResource extends Controller
@@ -14,7 +16,9 @@ class ExpensesControllerResource extends Controller
      */
     public function index()
     {
-        //
+        $exp = \App\Models\Expenses::all();
+
+        return Resp::Success('تم', $exp);
     }
 
     /**
@@ -23,9 +27,22 @@ class ExpensesControllerResource extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ExpensesRequest $request)
     {
-        //
+        $validate = $request->validated();
+
+        $exp = new Expenses();
+
+        foreach ($validate as $key => $value) {
+            $exp->$key = $value;
+        }
+
+        try {
+            $exp->save();
+            return Resp::Success('تمت العملية بنجاح', $exp);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**

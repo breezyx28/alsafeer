@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Receipt;
+use App\Helper\ResponseMessage as Resp;
+use App\Http\Requests\ReceiptRequest;
 use Illuminate\Http\Request;
 
 class ReceiptControllerResource extends Controller
@@ -14,7 +16,9 @@ class ReceiptControllerResource extends Controller
      */
     public function index()
     {
-        //
+        $rec = \App\Models\Receipt::all();
+
+        return Resp::Success('تم', $rec);
     }
 
     /**
@@ -23,9 +27,22 @@ class ReceiptControllerResource extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReceiptRequest $request)
     {
-        //
+        $validate = $request->validated();
+
+        $rec = new Receipt();
+
+        foreach ($validate as $key => $value) {
+            $rec->$key = $value;
+        }
+
+        try {
+            $rec->save();
+            return Resp::Success('تمت العملية بنجاح', $rec);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**

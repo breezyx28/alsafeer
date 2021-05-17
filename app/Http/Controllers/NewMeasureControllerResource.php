@@ -35,11 +35,12 @@ class NewMeasureControllerResource extends Controller
 
         foreach ($validate as $key => $value) {
             $measures->$key = $value;
+            $measures->receiptNumber = auth()->user()->id . strtotime("now");
         }
 
         try {
             $measures->save();
-            return Resp::Success('تم المقاسات بنجاج', $measures);
+            return Resp::Success('تم حفظ المقاسات بنجاج', $measures);
         } catch (\Throwable $th) {
             return Resp::Success('حدث خطأ', $th->getMessage());
         }

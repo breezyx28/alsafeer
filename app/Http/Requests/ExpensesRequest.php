@@ -27,10 +27,10 @@ class ExpensesRequest extends FormRequest
     public function rules()
     {
         return [
-            'dailies' => 'required|integer',
+            'dailies' => 'nullable|integer',
             'meals' => 'string',
-            'salaries' => 'required|integer',
-            'extraExpenses' => 'required|integer',
+            'salaries' => 'nullable|integer',
+            'extraExpenses' => 'nullable|integer',
             'note' => 'nullable|string|max:191',
         ];
     }

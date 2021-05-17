@@ -40,7 +40,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::apiResource('buys', BuyControllerResource::class)->only('store');
         Route::apiResource('expenses', ExpensesControllerResource::class)->only('store');
         Route::apiResource('importFroms', ImportFromControllerResource::class)->only('store');
-        Route::apiResource('Indebtednesses', IndebtednessControllerResource::class)->only('store');
+        Route::apiResource('indebtedness', IndebtednessControllerResource::class)->only('store');
         Route::apiResource('newMeasures', NewMeasureControllerResource::class)->only('store');
         Route::apiResource('receipts', ReceiptControllerResource::class)->only('store');
         Route::apiResource('invoices', InvoiceControllerResource::class)->only('show', 'index');

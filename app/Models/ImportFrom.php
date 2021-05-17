@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ImportFrom extends Model
 {
     use HasFactory;
+    protected $table = 'import_froms';
 }

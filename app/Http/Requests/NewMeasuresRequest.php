@@ -28,14 +28,14 @@ class NewMeasuresRequest extends FormRequest
     public function rules()
     {
         return [
-            'clientName' => 'required|string|max',
-            'clientPhone' => 'required|string|max',
+            'clientName' => 'required|string|max:191',
+            'clientPhone' => 'required|string|max:191',
             'customType' => 'required|string|in:جلابية,على الله,سروال,سديري',
-            'shoulderHeight' => 'integer',
-            'height' => 'integer',
-            'armHeight' => 'integer',
-            'sides' => 'integer',
-            'goba' => 'integer',
+            'shoulderHeight' => 'nullable|integer',
+            'height' => 'nullable|integer',
+            'armHeight' => 'nullable|integer',
+            'sides' => 'nullable|integer',
+            'goba' => 'nullable|integer',
             'buttonsType' => 'string|in:داخلي,خارجي,مقفول',
             'kafaType' => 'string|in:برمة,عادي,7 سنتمتر',
             'pantsType' => 'string|in:لستك,تكة',

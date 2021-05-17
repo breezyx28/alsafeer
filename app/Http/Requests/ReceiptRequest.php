@@ -28,10 +28,11 @@ class ReceiptRequest extends FormRequest
     public function rules()
     {
         return [
-            'receiptNumber' => 'required|integer',
+            'receiptNumber' => 'required|numeric|exists:new_measures,receiptNumber',
             'clientName' => 'required|string|max:191',
-            'clientPhone' => 'required|unique:users,phone|digits:10',
+            'clientPhone' => 'required|exists:new_measures,clientPhone|digits:10',
             'receiptStatus' => 'required|string|in:تم التسليم,لم يستلم',
+            'shiftUser' => 'required|exists:users,username'
         ];
     }
 

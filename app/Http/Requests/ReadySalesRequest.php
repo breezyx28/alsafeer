@@ -17,7 +17,7 @@ class ReadySalesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +28,7 @@ class ReadySalesRequest extends FormRequest
     public function rules()
     {
         return [
-            'clientName' => 'required|string|max',
+            'clientName' => 'required|string|max:191',
             'customType' => ['required', ['required', Rule::in([
                 'جلابية',
                 'على الله',

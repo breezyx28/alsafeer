@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReadySale;
+use App\Helper\ResponseMessage as Resp;
+use App\Http\Requests\ReadySalesRequest;
 use Illuminate\Http\Request;
 
 class ReadySaleControllerResource extends Controller
@@ -14,7 +16,9 @@ class ReadySaleControllerResource extends Controller
      */
     public function index()
     {
-        //
+        $readySale = \App\Models\ReadySale::all();
+
+        return Resp::Success('تم', $readySale);
     }
 
     /**
@@ -23,9 +27,22 @@ class ReadySaleControllerResource extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReadySalesRequest $request)
     {
-        //
+        $validate = $request->validated();
+
+        $readySale = new ReadySale();
+
+        foreach ($validate as $key => $value) {
+            $readySale->$key = $value;
+        }
+
+        try {
+            $readySale->save();
+            return Resp::Success('تمت العملية بنجاح', $readySale);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**
@@ -36,7 +53,7 @@ class ReadySaleControllerResource extends Controller
      */
     public function show(ReadySale $readySale)
     {
-        //
+        return Resp::Success('تم', $readySale);
     }
 
     /**

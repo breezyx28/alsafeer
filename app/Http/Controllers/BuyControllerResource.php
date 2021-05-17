@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buy;
+use App\Helper\ResponseMessage as Resp;
+use App\Http\Requests\BuysRequest;
 use Illuminate\Http\Request;
 
 class BuyControllerResource extends Controller
@@ -14,7 +16,9 @@ class BuyControllerResource extends Controller
      */
     public function index()
     {
-        //
+        $buy = \App\Models\Buy::all();
+
+        return Resp::Success('تم', $buy);
     }
 
     /**
@@ -23,9 +27,22 @@ class BuyControllerResource extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BuysRequest $request)
     {
-        //
+        $validate = $request->validated();
+
+        $buy = new Buy();
+
+        foreach ($validate as $key => $value) {
+            $buy->$key = $value;
+        }
+
+        try {
+            $buy->save();
+            return Resp::Success('تمت العملية بنجاح', $buy);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**

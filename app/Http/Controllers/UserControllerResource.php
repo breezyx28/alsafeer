@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\ResponseMessage as Resp;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class UserControllerResource extends Controller
      */
     public function index()
     {
-        //
+        return Resp::Success('تم', \App\Models\User::all());
     }
 
     /**

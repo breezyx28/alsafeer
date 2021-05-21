@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewMeasure;
+use App\Models\Invoice;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\NewMeasuresRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NewMeasureControllerResource extends Controller
 {
@@ -32,16 +34,34 @@ class NewMeasureControllerResource extends Controller
         $validate = $request->validated();
 
         $measures = new NewMeasure();
+        $invoice = new Invoice();
 
         foreach ($validate as $key => $value) {
             $measures->$key = $value;
             $measures->receiptNumber = auth()->user()->id . strtotime("now");
         }
 
+        DB::beginTransaction();
         try {
             $measures->save();
-            return Resp::Success('تم حفظ المقاسات بنجاج', $measures);
+
+            $invoice->invoiceNumber = random_int(1, 9) . strtotime("now");
+            $invoice->clientName = $measures->clientName;
+            $invoice->clientPhone = $measures->clientPhone;
+            $invoice->total = $measures->price;
+            $invoice->products = $measures->customType;
+            $invoice->discount = 0;
+            $invoice->paymentMethod = $measures->paymentMethod;
+            $invoice->rest = $measures->rest;
+            $invoice->status = $measures->rest != 0 ? 'الدفع غير مكتمل' : 'الدفع مكتمل';
+            $invoice->shiftUser = auth()->user()->username;
+
+            $invoice->save();
+
+            DB::commit();
+            return Resp::Success('تم حفظ المقاسات بنجاج', ['measures' => $measures, 'invoice' => $invoice]);
         } catch (\Throwable $th) {
+            DB::rollback();
             return Resp::Success('حدث خطأ', $th->getMessage());
         }
     }

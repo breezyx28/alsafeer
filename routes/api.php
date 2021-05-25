@@ -23,7 +23,7 @@ Route::post(BASE . '/login', [LoginController::class, 'Login']);
 Route::post(BASE . '/register', [RegisterController::class, 'register']);
 
 // search
-Route::get(BASE . '/search', [SearchController::class, 'SearchController']);
+Route::get(BASE . '/search', [SearchController::class, 'search']);
 
 Route::group(['middleware' => 'auth.jwt'], function () {
 

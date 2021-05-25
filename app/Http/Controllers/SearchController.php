@@ -13,13 +13,11 @@ class SearchController extends Controller
     {
         $validated = (object) $request->validate([
             'phoneNumber' => ['required', 'numeric', new phoneRule()],
-            'table' => 'required|in:buys,expenses,import_froms,invoices,new_measures,ready_sales,receipts,users,indebtedness'
+            'table' => 'required|in:invoices,new_measures,ready_sales,receipts,users,indebtedness'
         ]);
 
         // check for the phoneNummber in DB
-        $check  = DB::table($validated->table)->where($validated->table == 'indebtedness' ? 'phone' : 'clientPhone', $validated->phoneNumber)->firstOr(function () {
-            return null;
-        });
+        $check  = DB::table($validated->table)->where($validated->table == 'indebtedness' || 'users' ? 'phone' : 'clientPhone', $validated->phoneNumber)->first();
 
         return Resp::Success('ok', $check);
     }

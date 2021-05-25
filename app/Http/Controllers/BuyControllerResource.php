@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buy;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\BuysRequest;
+use App\Http\Requests\UpdateBuyRequest;
 use Illuminate\Http\Request;
 
 class BuyControllerResource extends Controller
@@ -63,9 +64,20 @@ class BuyControllerResource extends Controller
      * @param  \App\Models\Buy  $buy
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Buy $buy)
+    public function update(UpdateBuyRequest $request, Buy $buy)
     {
-        //
+        $validate = $request->validated();
+
+        foreach ($validate as $key => $value) {
+            $buy->$key = $value;
+        }
+
+        try {
+            $buy->save();
+            return Resp::Success('تمت التحديث بنجاح', $buy);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**
@@ -76,6 +88,8 @@ class BuyControllerResource extends Controller
      */
     public function destroy(Buy $buy)
     {
-        //
+        $buy->delete();
+
+        return Resp::Success('تم الحذف', $buy);
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class ImportFromRequest extends FormRequest
+class UpdateImportFromsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +16,10 @@ class ImportFromRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if (auth()->user()->role == 'مدير') {
+            return true;
+        }
+        return false;
     }
 
     /**

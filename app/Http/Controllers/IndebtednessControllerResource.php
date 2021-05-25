@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Indebtedness;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\IndebtednessRequest;
+use App\Http\Requests\UpdateIndebtednessRequest;
 use Illuminate\Http\Request;
 
 class IndebtednessControllerResource extends Controller
@@ -53,7 +54,7 @@ class IndebtednessControllerResource extends Controller
      */
     public function show(Indebtedness $indebtedness)
     {
-        //
+        return Resp::Success('تم', $indebtedness);
     }
 
     /**
@@ -63,9 +64,20 @@ class IndebtednessControllerResource extends Controller
      * @param  \App\Models\Indebtedness  $indebtedness
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Indebtedness $indebtedness)
+    public function update(UpdateIndebtednessRequest $request, Indebtedness $indebtedness)
     {
-        //
+        $validate = $request->validated();
+
+        foreach ($validate as $key => $value) {
+            $indebtedness->$key = $value;
+        }
+
+        try {
+            $indebtedness->save();
+            return Resp::Success('تمت التحديث بنجاح', $indebtedness);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**
@@ -76,6 +88,8 @@ class IndebtednessControllerResource extends Controller
      */
     public function destroy(Indebtedness $indebtedness)
     {
-        //
+        $indebtedness->delete();
+
+        return Resp::Success('تم الحذف', $indebtedness);
     }
 }

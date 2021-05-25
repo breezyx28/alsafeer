@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class ImportFromRequest extends FormRequest
+class UpdateIndebtednessRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +16,10 @@ class ImportFromRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if (auth()->user()->role == 'مدير') {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -27,15 +30,11 @@ class ImportFromRequest extends FormRequest
     public function rules()
     {
         return [
-            'totalPrice' => 'required|integer',
-            'jalabeya' => 'required_with:jalabeyaPrice|integer',
-            'jalabeyaPrice' => 'required_with:jalabeya|integer',
-            'alaalla' => 'required_with:alaallaPrice|integer',
-            'alaallaPrice' => 'required_with:alaalla|integer',
-            'pants' => 'required_with:pantsPrice|integer',
-            'pantsPrice' => 'required_with:pants|integer',
-            'tageeya' => 'required_with:tageeyaPrice|integer',
-            'tageeyaPrice' => 'required_with:tageeya|integer',
+            'name' => 'string|max:191',
+            'amount' => 'integer',
+            'phone' => 'digits:10',
+            'status' => 'string|in:دائن,مدين',
+            'statement' => 'string|max:191',
         ];
     }
 

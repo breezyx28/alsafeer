@@ -17,7 +17,10 @@ class updateUsersRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if (auth()->user()->role == 'مدير') {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -28,17 +31,15 @@ class updateUsersRequest extends FormRequest
     public function rules()
     {
         return [
-            'firstName' => 'string|max:191',
-            'userName' => 'unique:users|string|max:191',
-            'middleName' => 'string|max:191',
-            'LastName' => 'string|max:191',
-            'thumbnail' => 'image|mimes:jpg,jpeg,png',
+            'empNumber' => 'numeric',
+            'empName' => 'string|max:191',
             'phone' => 'unique:users,phone|digits:10',
-            'email' => 'string|unique:users|regex:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/',
-            'address' => 'string|max:191',
-            'state_id' => 'exists:states,id|integer',
-            'gender' =>  Rule::in(['ذكر', 'انثى']),
-            'activity' =>  'boolean',
+            'address' => 'nullable|string|max:191',
+            'perDay' => 'integer',
+            'salary' => 'integer',
+            'username' => 'unique:users|string|max:191',
+            'password' => 'string|max:191',
+            'role' => [Rule::in(['مدير', 'مستخدم'])]
         ];
     }
 

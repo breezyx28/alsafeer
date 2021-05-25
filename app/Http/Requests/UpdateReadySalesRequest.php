@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class ImportFromRequest extends FormRequest
+class UpdateReadySalesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +16,10 @@ class ImportFromRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if (auth()->user()->role == 'مدير') {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -27,15 +30,26 @@ class ImportFromRequest extends FormRequest
     public function rules()
     {
         return [
-            'totalPrice' => 'required|integer',
-            'jalabeya' => 'required_with:jalabeyaPrice|integer',
-            'jalabeyaPrice' => 'required_with:jalabeya|integer',
-            'alaalla' => 'required_with:alaallaPrice|integer',
-            'alaallaPrice' => 'required_with:alaalla|integer',
-            'pants' => 'required_with:pantsPrice|integer',
-            'pantsPrice' => 'required_with:pants|integer',
-            'tageeya' => 'required_with:tageeyaPrice|integer',
-            'tageeyaPrice' => 'required_with:tageeya|integer',
+            'clientName' => 'string|max:191',
+            'customType' => [Rule::in([
+                'جلابية',
+                'على الله',
+                'سروال',
+                'سديري',
+                'فنيلة',
+                'عصاية',
+                'طاقية',
+                'بوكسر',
+                'ساعة',
+                'عطور',
+                'قماش',
+                'جزمة',
+                'حذاء',
+            ])],
+            'amount' => 'integer',
+            'price' => 'integer',
+            'paymentMethod' => 'string|in:كاش,بنكك',
+            'shiftUser' => 'string|exists:users,username',
         ];
     }
 

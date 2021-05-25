@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ImportFrom;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\ImportFromRequest;
+use App\Http\Requests\UpdateImportFromsRequest;
 use Illuminate\Http\Request;
 
 class ImportFromControllerResource extends Controller
@@ -63,9 +64,20 @@ class ImportFromControllerResource extends Controller
      * @param  \App\Models\ImportFrom  $importFrom
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ImportFrom $importFrom)
+    public function update(UpdateImportFromsRequest $request, ImportFrom $importFrom)
     {
-        //
+        $validate = $request->validated();
+
+        foreach ($validate as $key => $value) {
+            $importFrom->$key = $value;
+        }
+
+        try {
+            $importFrom->save();
+            return Resp::Success('تمت التحديث بنجاح', $importFrom);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**

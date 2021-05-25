@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Receipt;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\ReceiptRequest;
+use App\Http\Requests\UpdateReceiptsRequest;
 use Illuminate\Http\Request;
 
 class ReceiptControllerResource extends Controller
@@ -53,7 +54,7 @@ class ReceiptControllerResource extends Controller
      */
     public function show(Receipt $receipt)
     {
-        //
+        return Resp::Success('تم', $receipt);
     }
 
     /**
@@ -63,9 +64,20 @@ class ReceiptControllerResource extends Controller
      * @param  \App\Models\Receipt  $receipt
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Receipt $receipt)
+    public function update(UpdateReceiptsRequest $request, Receipt $receipt)
     {
-        //
+        $validate = $request->validated();
+
+        foreach ($validate as $key => $value) {
+            $receipt->$key = $value;
+        }
+
+        try {
+            $receipt->save();
+            return Resp::Success('تمت التحديث بنجاح', $receipt);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**
@@ -76,6 +88,8 @@ class ReceiptControllerResource extends Controller
      */
     public function destroy(Receipt $receipt)
     {
-        //
+        $receipt->delete();
+
+        return Resp::Success('تم الحذف', $receipt);
     }
 }

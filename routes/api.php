@@ -22,6 +22,9 @@ const ADMIN = 'v1/admin';
 Route::post(BASE . '/login', [LoginController::class, 'Login']);
 Route::post(BASE . '/register', [RegisterController::class, 'register']);
 
+// search
+Route::get(BASE . '/search', [SearchController::class, 'SearchController']);
+
 Route::group(['middleware' => 'auth.jwt'], function () {
 
     Route::group(['prefix' => BASE, 'middleware' => 'userWare'], function () {
@@ -32,8 +35,6 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::put('resetPassword', [LoginController::class, 'resetPassword']);
         Route::put('updateProfile', [LoginController::class, 'updateProfile']);
 
-        // search
-        Route::get('search', [SearchController::class, 'SearchController']);
 
         // resources
         Route::apiResource('readySales', ReadySaleControllerResource::class)->only('store', 'index');
@@ -52,12 +53,12 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
         // resources
         Route::apiResources([
-            'Users' => UserControllerResource::class,
+            'users' => UserControllerResource::class,
             'readySales' => ReadySaleControllerResource::class,
             'buys' => BuyControllerResource::class,
             'expenses' => ExpensesControllerResource::class,
             'importFroms' => ImportFromControllerResource::class,
-            'Indebtednesses' => IndebtednessControllerResource::class,
+            'indebtednesses' => IndebtednessControllerResource::class,
             'newMeasures' => NewMeasureControllerResource::class,
             'receipts' => ReceiptControllerResource::class,
             'invoices' => InvoiceControllerResource::class,

@@ -6,6 +6,7 @@ use App\Models\NewMeasure;
 use App\Models\Invoice;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\NewMeasuresRequest;
+use App\Http\Requests\UpdateNewMeasuresRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -53,6 +54,7 @@ class NewMeasureControllerResource extends Controller
             $invoice->discount = 0;
             $invoice->paymentMethod = $measures->paymentMethod;
             $invoice->rest = $measures->rest;
+            $invoice->receiptDate = $measures->dateOfRecive;
             $invoice->status = $measures->rest != 0 ? 'الدفع غير مكتمل' : 'الدفع مكتمل';
             $invoice->shiftUser = auth()->user()->username;
 
@@ -84,9 +86,20 @@ class NewMeasureControllerResource extends Controller
      * @param  \App\Models\NewMeasure  $newMeasure
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, NewMeasure $newMeasure)
+    public function update(UpdateNewMeasuresRequest $request, NewMeasure $newMeasure)
     {
-        //
+        $validate = $request->validated();
+
+        foreach ($validate as $key => $value) {
+            $newMeasure->$key = $value;
+        }
+
+        try {
+            $newMeasure->save();
+            return Resp::Success('تمت التحديث بنجاح', $newMeasure);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**
@@ -97,6 +110,8 @@ class NewMeasureControllerResource extends Controller
      */
     public function destroy(NewMeasure $newMeasure)
     {
-        //
+        $newMeasure->delete();
+
+        return Resp::Success('تم الحذف', $newMeasure);
     }
 }

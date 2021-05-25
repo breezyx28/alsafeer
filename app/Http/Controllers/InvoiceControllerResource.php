@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\ResponseMessage as Resp;
+use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class InvoiceControllerResource extends Controller
      */
     public function index()
     {
-        //
+        return Resp::Success('تم', \App\Models\Invoice::all());
     }
 
     /**
@@ -46,9 +48,20 @@ class InvoiceControllerResource extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Invoice $invoice)
+    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
     {
-        //
+        $validate = $request->validated();
+
+        foreach ($validate as $key => $value) {
+            $invoice->$key = $value;
+        }
+
+        try {
+            $invoice->save();
+            return Resp::Success('تمت التحديث بنجاح', $invoice);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**

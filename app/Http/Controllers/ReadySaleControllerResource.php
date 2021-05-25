@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ReadySale;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\ReadySalesRequest;
+use App\Http\Requests\UpdateReadySalesRequest;
 use Illuminate\Http\Request;
 
 class ReadySaleControllerResource extends Controller
@@ -63,9 +64,20 @@ class ReadySaleControllerResource extends Controller
      * @param  \App\Models\ReadySale  $readySale
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ReadySale $readySale)
+    public function update(UpdateReadySalesRequest $request, ReadySale $readySale)
     {
-        //
+        $validate = $request->validated();
+
+        foreach ($validate as $key => $value) {
+            $readySale->$key = $value;
+        }
+
+        try {
+            $readySale->save();
+            return Resp::Success('تمت التحديث بنجاح', $readySale);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**
@@ -76,6 +88,8 @@ class ReadySaleControllerResource extends Controller
      */
     public function destroy(ReadySale $readySale)
     {
-        //
+        $readySale->delete();
+
+        return Resp::Success('تم الحذف', $readySale);
     }
 }

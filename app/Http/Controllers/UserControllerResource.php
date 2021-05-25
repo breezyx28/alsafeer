@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helper\ResponseMessage as Resp;
+use App\Http\Requests\updateUsersRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\UsersRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UserControllerResource extends Controller
 {
@@ -24,9 +27,30 @@ class UserControllerResource extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UsersRequest $request)
     {
-        //
+        $validate = (object) $request->validated();
+
+        $user = new \App\Models\User();
+
+        foreach ($validate as $key => $value) {
+
+            if ($validate->$key == 'password') {
+                $user->password = null;
+            }
+
+            $user->$key = $value;
+        }
+
+        $user->password = Hash::make($request->password);
+
+        try {
+            $user->save();
+
+            return Resp::Success('تم إنشاء مستخدم بنجاح', $user);
+        } catch (\Exception $e) {
+            return Resp::Error('حدث خطأ ما', $e);
+        }
     }
 
     /**
@@ -47,9 +71,25 @@ class UserControllerResource extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(updateUsersRequest $request, User $user)
     {
-        //
+        $validate = $request->validated();
+        $count = \App\Models\User::where('role', 'مدير')->count();
+
+        foreach ($validate as $key => $value) {
+            if ($key === 'role' && $count < 2) {
+
+                return Resp::Error('لا يمكن تحديث حالة المدير ... هذا حساب المدير الوحيد');
+            }
+            $user->$key = $value;
+        }
+
+        try {
+            $user->save();
+            return Resp::Success('تمت التحديث بنجاح', $user);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**
@@ -60,6 +100,8 @@ class UserControllerResource extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return Resp::Success('تم الحذف', $user);
     }
 }

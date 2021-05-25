@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expenses;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\ExpensesRequest;
+use App\Http\Requests\UpdatEexpensesRequest;
 use Illuminate\Http\Request;
 
 class ExpensesControllerResource extends Controller
@@ -51,9 +52,9 @@ class ExpensesControllerResource extends Controller
      * @param  \App\Models\Expenses  $expenses
      * @return \Illuminate\Http\Response
      */
-    public function show(Expenses $expenses)
+    public function show(Expenses $expense)
     {
-        //
+        return Resp::Success('تم', $expense);
     }
 
     /**
@@ -63,9 +64,20 @@ class ExpensesControllerResource extends Controller
      * @param  \App\Models\Expenses  $expenses
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Expenses $expenses)
+    public function update(UpdatEexpensesRequest $request, Expenses $expenses)
     {
-        //
+        $validate = $request->validated();
+
+        foreach ($validate as $key => $value) {
+            $expenses->$key = $value;
+        }
+
+        try {
+            $expenses->save();
+            return Resp::Success('تمت التحديث بنجاح', $expenses);
+        } catch (\Throwable $th) {
+            return Resp::Success('حدث خطأ', $th->getMessage());
+        }
     }
 
     /**
@@ -76,6 +88,8 @@ class ExpensesControllerResource extends Controller
      */
     public function destroy(Expenses $expenses)
     {
-        //
+        $expenses->delete();
+
+        return Resp::Success('تم الحذف', $expenses);
     }
 }

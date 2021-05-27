@@ -27,7 +27,7 @@ class LoginController extends Controller
         $token = null;
 
         if (!$token = JWTAuth::attempt($credintials)) {
-            return Resp::Error('خطأ في كلمة السر او رقم الهاتف');
+            return Resp::Error('خطأ في كلمة السر او إسم المستخدم');
         }
 
         $user = auth()->user();

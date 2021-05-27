@@ -38,7 +38,7 @@ class InvoiceControllerResource extends Controller
      */
     public function show(Invoice $invoice)
     {
-        //
+        return Resp::Success('تم', $invoice);
     }
 
     /**

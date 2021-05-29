@@ -54,7 +54,7 @@ class BuyControllerResource extends Controller
      */
     public function show(Buy $buy)
     {
-        //
+        return Resp::Success('تم', $buy);
     }
 
     /**

@@ -17,7 +17,7 @@ class SearchController extends Controller
         ]);
 
         // check for the phoneNummber in DB
-        $check  = DB::table($validated->table)->where($validated->table == 'indebtedness' || 'users' ? 'phone' : 'clientPhone', $validated->phoneNumber)->first();
+        $check  = DB::table($validated->table)->where(($validated->table == 'indebtedness' || $validated->table ==  'users') ? 'phone' : 'clientPhone', $validated->phoneNumber)->first();
 
         return Resp::Success('ok', $check);
     }

@@ -31,7 +31,7 @@ class UpdateInvoiceRequest extends FormRequest
     {
         return [
             'clientName' => 'string|max:191',
-            'clientPhone' => 'unique:users,phone|digits:10',
+            'clientPhone' => 'exists:users,phone|digits:10',
             'products' => 'digits:10',
             'paid' => 'integer',
             'rest' => 'integer',

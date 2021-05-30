@@ -61,7 +61,7 @@ class UserControllerResource extends Controller
      */
     public function show(User $user)
     {
-        //
+        return Resp::Success('تم', $user);
     }
 
     /**
@@ -77,7 +77,7 @@ class UserControllerResource extends Controller
         $count = \App\Models\User::where('role', 'مدير')->count();
 
         foreach ($validate as $key => $value) {
-            if ($key === 'role' && $count < 2) {
+            if ($key === 'role' && $count < 2 && $user->role === 'مدير') {
 
                 return Resp::Error('لا يمكن تحديث حالة المدير ... هذا حساب المدير الوحيد');
             }

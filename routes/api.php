@@ -18,9 +18,24 @@ use Illuminate\Support\Facades\Route;
 
 const BASE = 'v1/user';
 const ADMIN = 'v1/admin';
+const PUB = 'v1/public';
 
 Route::post(BASE . '/login', [LoginController::class, 'Login']);
 Route::post(BASE . '/register', [RegisterController::class, 'register']);
+
+
+// public
+Route::apiResource(PUB . '/readySales', ReadySaleControllerResource::class)->only('index');
+Route::apiResource(PUB . '/buys', BuyControllerResource::class)->only('index');
+Route::apiResource(PUB . '/expenses', ExpensesControllerResource::class)->only('index');
+Route::apiResource(PUB . '/importFroms', ImportFromControllerResource::class)->only('index');
+Route::apiResource(PUB . '/indebtedness', IndebtednessControllerResource::class)->only('index');
+Route::apiResource(PUB . '/newMeasures', NewMeasureControllerResource::class)->only('index');
+Route::apiResource(PUB . '/receipts', ReceiptControllerResource::class)->only('index');
+Route::apiResource(PUB . '/invoices', InvoiceControllerResource::class)->only('show', 'index');
+Route::apiResource(PUB . '/users', UserControllerResource::class)->only('index');
+
+// public end
 
 // search
 Route::get(BASE . '/search', [SearchController::class, 'search']);
@@ -34,7 +49,6 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::post('logout', [LoginController::class, 'logout']);
         Route::put('resetPassword', [LoginController::class, 'resetPassword']);
         Route::put('updateProfile', [LoginController::class, 'updateProfile']);
-
 
         // resources
         Route::apiResource('readySales', ReadySaleControllerResource::class)->only('store', 'index');

@@ -33,11 +33,11 @@ class updateUsersRequest extends FormRequest
         return [
             'empNumber' => 'numeric',
             'empName' => 'string|max:191',
-            'phone' => 'unique:users,phone|digits:10',
+            'phone' => 'exists:users,phone|digits:10',
             'address' => 'nullable|string|max:191',
             'perDay' => 'integer',
             'salary' => 'integer',
-            'username' => 'unique:users|string|max:191',
+            'username' => 'exists:users|string|max:191',
             'password' => 'string|max:191',
             'role' => [Rule::in(['مدير', 'مستخدم'])]
         ];

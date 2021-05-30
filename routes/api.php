@@ -10,6 +10,7 @@ use App\Http\Controllers\NewMeasureControllerResource;
 use App\Http\Controllers\ReadySaleControllerResource;
 use App\Http\Controllers\ReceiptControllerResource;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserControllerResource;
 // use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ Route::apiResource(PUB . '/newMeasures', NewMeasureControllerResource::class)->o
 Route::apiResource(PUB . '/receipts', ReceiptControllerResource::class)->only('index');
 Route::apiResource(PUB . '/invoices', InvoiceControllerResource::class)->only('show', 'index');
 Route::apiResource(PUB . '/users', UserControllerResource::class)->only('index');
-
+Route::post(PUB . '/reportBetween', [ReportsController::class, 'ReportBetween']);
 // public end
 
 // search

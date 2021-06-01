@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReadySale;
+use App\Models\Invoice;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\ReadySalesRequest;
 use App\Http\Requests\UpdateReadySalesRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReadySaleControllerResource extends Controller
 {
@@ -33,15 +35,34 @@ class ReadySaleControllerResource extends Controller
         $validate = $request->validated();
 
         $readySale = new ReadySale();
+        $invoice = new Invoice();
 
         foreach ($validate as $key => $value) {
             $readySale->$key = $value;
         }
 
+        DB::beginTransaction();
         try {
             $readySale->save();
-            return Resp::Success('تمت العملية بنجاح', $readySale);
+
+            $invoice->invoiceNumber = random_int(1, 9) . strtotime("now");
+            $invoice->clientName = $readySale->clientName;
+            $invoice->total = $readySale->price * $readySale->amount;
+            $invoice->products = $readySale->customType;
+            $invoice->discount = 0;
+            $invoice->paymentMethod = $readySale->paymentMethod;
+            $invoice->paid = $readySale->price * $readySale->amount;
+            $invoice->rest = 0;
+            $invoice->receiptDate = \Carbon\Carbon::now()->format('Y-m-d');
+            $invoice->status = 'الدفع مكتمل';
+            $invoice->shiftUser = auth()->user()->username;
+
+            $invoice->save();
+
+            DB::commit();
+            return Resp::Success('تم بنجاج', ['readySales' => $readySale, 'invoice' => $invoice]);
         } catch (\Throwable $th) {
+            DB::rollback();
             return Resp::Success('حدث خطأ', $th->getMessage());
         }
     }

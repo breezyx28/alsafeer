@@ -53,6 +53,7 @@ class NewMeasureControllerResource extends Controller
             $invoice->products = $measures->customType;
             $invoice->discount = 0;
             $invoice->paymentMethod = $measures->paymentMethod;
+            $invoice->paid = $measures->paid;
             $invoice->rest = $measures->rest;
             $invoice->receiptDate = $measures->dateOfRecive;
             $invoice->status = $measures->rest != 0 ? 'الدفع غير مكتمل' : 'الدفع مكتمل';

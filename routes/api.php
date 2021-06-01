@@ -4,6 +4,7 @@ use App\Http\Controllers\BuyControllerResource;
 use App\Http\Controllers\ExpensesControllerResource;
 use App\Http\Controllers\ImportFromControllerResource;
 use App\Http\Controllers\IndebtednessControllerResource;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceControllerResource;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NewMeasureControllerResource;
@@ -78,5 +79,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
             'receipts' => ReceiptControllerResource::class,
             'invoices' => InvoiceControllerResource::class,
         ]);
+
+        Route::get('invoice/{invoiceNumber}', [InvoiceController::class, 'getInvoice']);
     });
 });

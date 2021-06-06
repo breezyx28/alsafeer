@@ -30,7 +30,7 @@ class ReportBetweenRequest extends FormRequest
         return [
             'startDate' => 'required|before:endDate|date',
             'endDate' => 'required|date|after:startDate',
-            'table' => 'required|in:invoices,new_measures,ready_sales,receipts,users,indebtedness'
+            'table' => 'required|in:invoices,new_measures,ready_sales,receipts,users,indebtedness,import_froms,expenses,buys'
         ];
     }
 

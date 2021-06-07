@@ -25,7 +25,6 @@ const PUB = 'v1/public';
 Route::post(BASE . '/login', [LoginController::class, 'Login']);
 Route::post(BASE . '/register', [RegisterController::class, 'register']);
 
-
 // public
 Route::apiResource(PUB . '/readySales', ReadySaleControllerResource::class)->only('index');
 Route::apiResource(PUB . '/buys', BuyControllerResource::class)->only('index');
